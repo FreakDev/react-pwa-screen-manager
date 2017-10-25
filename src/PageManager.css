@@ -15,27 +15,23 @@
   width: 100%;  
 }
 
-.page-appear,
-.page-enter {
-  /* opacity: 0; */
+.page {
+  position: relative;
+  top: 0;
+  left: 0;  
+  height: 100%;
+  width: 100%;  
 }
 
 .page-appear-active,
 .page-enter-active {
   transition: all 0.5s;
-  /* opacity: 1; */
 }
 
 .page-exit {
   transition: all 0.5s;
-  /* opacity: 1; */
   transform: translateX(0);
 }
-
-.page-exit-active {
-  /* opacity: 0; */
-}
-
 
 
 
