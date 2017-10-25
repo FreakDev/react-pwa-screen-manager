@@ -21,17 +21,12 @@ export class PageManager extends Component {
 		};
 		const pageOrder = React.Children.map(this.props.children, (child) => child.props.path)
 
-		console.log(pageOrder)
-
 		let indexCurrent = pageOrder.findIndex(
 			findPage.bind(this, this.props.location.pathname)
 		);
 		let indexNext = pageOrder.findIndex(
 			findPage.bind(this, nextProps.location.pathname)
 		);
-
-		// indexCurrent = indexCurrent !== -1 ? indexCurrent : index404;
-		// indexNext = indexNext !== -1 ? indexNext : index404;
 
 		this.setState({
 			direction: indexNext - indexCurrent
