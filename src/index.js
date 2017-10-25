@@ -12,8 +12,9 @@ import registerServiceWorker from './registerServiceWorker';
 ReactDOM.render(
     <div>
         <PageManager>
-            <Page name="home" exact path="/" />
-            <Page name="page 2" exact path="/two" />
+            <Page style={{ background: 'red' }} name="home" exact path="/" />
+            <Page style={{ background: 'green' }} name="page 2" exact path="/two" />
+            <Page style={{ background: 'blue' }} name="page 3" exact path="/three" />
             <NavigationBar position="bottom" />
         </PageManager>
     </div>

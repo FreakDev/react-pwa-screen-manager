@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 import { withRouter, Switch } from 'react-router-dom'
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import Page from './Page'
 import NavigationBar from './NavigationBar'
 
-import './App.css';
+import './PageManager.css';
 
 export class PageManager extends Component {
 	state = {
@@ -38,7 +38,7 @@ export class PageManager extends Component {
 		const currentKey = location.pathname.split("/")[1] || "/";
 		const timeout = { enter: 500, exit: 500 };
 		let pages = []
-		const routes = React.Children.map(children, child => {
+		const routes = children.filter( child => {
 			if (child.type === Page) {
 				pages.push({ name: child.props.name, path: child.props.path })
 				return child
@@ -57,11 +57,18 @@ export class PageManager extends Component {
 					classNames="page"
 					appear
 				>
-					<div className={"page-inner"}>
+					<section className={"page-inner"}>
 						<Switch location={location}>
-							{ routes }
+						{
+							React.Children.map(routes, route => {
+								const { exact, path, ...props } = route.props
+								return (
+									<Route exact={exact} path={path} render={() => React.cloneElement(route, { ...props })} />											
+								)
+							})
+						}
 						</Switch>
-					</div>
+					</section>
 				</CSSTransition>
 				{ React.Children.map(navbars, (navbar) => {
 					return React.cloneElement(navbar, { pages })
