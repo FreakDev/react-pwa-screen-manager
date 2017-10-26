@@ -37,18 +37,12 @@ export class PageManager extends Component {
 		const { children, location } = this.props
 		const currentKey = location.pathname.split("/")[1] || "/";
 		const timeout = { enter: 500, exit: 500 };
-		let pages = []
-		const routes = children.filter( child => {
-			if (child.type === Page) {
-				pages.push({ name: child.props.name, path: child.props.path })
-				return child
-			} else {
-				return null
-			}
-		})
-		const navbars = children.filter(child => {
-			return child.type === NavigationBar
-		})
+		const routes = children.filter( c => c.type === Page )
+		const animatedPages = children.filter( r => !r.props.noAnim )
+		const notAnimatedPages = children.filter( r => r.props.noAnim )
+		const pages = routes.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
+		const navbars = children.filter(child => child.type === NavigationBar)
+
 		return (
 			<TransitionGroup component="div" className={"page-container " + (this.state.direction >= 0 ? "right" : "left")}>
 				<CSSTransition
@@ -60,17 +54,29 @@ export class PageManager extends Component {
 					<section className={"page-inner"}>
 						<Switch location={location}>
 						{
-							React.Children.map(routes, route => {
-								const { exact, path, ...props } = route.props
+							animatedPages.map(page => {
+								const { exact, path, ...props } = page.props
 								return (
-									<Route exact={exact} path={path} render={() => React.cloneElement(route, { ...props })} />											
+									<Route exact={exact} path={path} render={() => React.cloneElement(page, { ...props })} />											
 								)
 							})
 						}
 						</Switch>
 					</section>
 				</CSSTransition>
-				{ React.Children.map(navbars, (navbar) => {
+				<section className={"page-inner"}>
+					<Switch location={location}>
+					{
+						notAnimatedPages.map(page => {
+							const { exact, path, ...props } = page.props
+							return (
+								<Route exact={exact} path={path} render={() => React.cloneElement(page, { ...props })} />											
+							)
+						})
+					}
+					</Switch>
+				</section>
+				{ navbars.map((navbar) => {
 					return React.cloneElement(navbar, { pages })
 				}) }
 			</TransitionGroup>								
@@ -80,8 +86,9 @@ export class PageManager extends Component {
 
 const PageManagerWithRouter = withRouter(PageManager)
 
-export default props => (
+export default props => {
+	return (
 	<Router>
 		<PageManagerWithRouter { ...props } />
 	</Router>
-);
+)};

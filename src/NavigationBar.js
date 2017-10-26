@@ -11,7 +11,7 @@ export default ({ pages, position, ...props }) => {
                 props.render(pages) :
                 (
                 <ul>{
-                    pages.map((page, k) => {
+                    Array.isArray(pages) && pages.map((page, k) => {
                         return (
                             <li key={k}>
                                 <Link to={ page.path }>{
