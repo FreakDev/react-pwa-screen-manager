@@ -39,10 +39,12 @@ export class PageManager extends Component {
 		const currentKey = location.pathname.split("/")[1] || "/";
 		const timeout = { enter: 500, exit: 500 };
 		const routes = children.filter( c => c.type === Page )
-		const animatedPages = children.filter( r => !r.props.noAnim )
-		const notAnimatedPages = children.filter( r => r.props.noAnim )
+		const animatedPages = routes.filter( r => !r.props.noAnim )
+		const notAnimatedPages = routes.filter( r => r.props.noAnim )
+		const hideNavbarPath = routes.filter( r => r.props.hideNavbar ).map(r => r.props.path)
+
 		const pages = routes.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
-		const navbars = children.filter(child => child.type === NavigationBar)
+		const navbars = children.filter(child => child.type === NavigationBar )
 
 		const forbiddenPage = children.find( c => c.type === ForbiddenPage )		
 
@@ -83,7 +85,7 @@ export class PageManager extends Component {
 					}
 					</Switch>
 				</section>
-				{ navbars.map((navbar, k) => {
+				{ hideNavbarPath.indexOf(location.pathname) === -1 && navbars.map((navbar, k) => {
 					return React.cloneElement(navbar, { pages, key: k })
 				}) }
 			</div>

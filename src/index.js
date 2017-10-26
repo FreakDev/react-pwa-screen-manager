@@ -19,7 +19,7 @@ ReactDOM.render(
             return true
         }}
     >
-        <Page style={{ background: 'yellow' }} name="splash" exact path="/" noAnim >
+        <Page style={{ background: 'yellow' }} name="splash" exact path="/" noAnim noNavbar hideNavbar >
             <h1>Splash</h1>
         </Page>
         <Page style={{ background: 'cyan' }} name="home" exact path="/home">
