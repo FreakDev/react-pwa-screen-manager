@@ -8,12 +8,37 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import Page from './Page'
 import NavigationBar from './NavigationBar'
 import ForbiddenPage from './ForbiddenPage'
+import SplashScreen from './SplashScreen'
 
 import './PageManager.css';
 
+const timeout = { enter: 500, exit: 500 };
+
 export class PageManager extends Component {
-	state = {
-		direction: 0
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			direction: 0,
+			hideSplash: false,
+			renderSplash: this.props.children.find( c => c.type === SplashScreen ) !== undefined,
+		}
+	
+	}
+
+	componentDidMount() {
+		if (this.state.renderSplash) {
+			setTimeout(() => {
+				this.setState({
+					hideSplash: true,
+				})
+				setTimeout(() => {
+					this.setState({
+						renderSplash: false
+					})
+				}, timeout.exit)	
+			}, 3000)	
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -37,16 +62,18 @@ export class PageManager extends Component {
 	render() {
 		const { children, location } = this.props
 		const currentKey = location.pathname.split("/")[1] || "/";
-		const timeout = { enter: 500, exit: 500 };
-		const routes = children.filter( c => c.type === Page )
-		const animatedPages = routes.filter( r => !r.props.noAnim )
-		const notAnimatedPages = routes.filter( r => r.props.noAnim )
-		const hideNavbarPath = routes.filter( r => r.props.hideNavbar ).map(r => r.props.path)
 
-		const pages = routes.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
-		const navbars = children.filter(child => child.type === NavigationBar )
-
+		const pages = children.filter( c => c.type === Page )
+		const navbars = children.filter(child => child.type === NavigationBar )		
 		const forbiddenPage = children.find( c => c.type === ForbiddenPage )		
+		const splashScreen = children.find( c => c.type === SplashScreen )		
+		
+		const animatedPages = pages.filter( r => !r.props.noAnim )
+		const notAnimatedPages = pages.filter( r => r.props.noAnim )
+		const hideNavbarPath = pages.filter( r => r.props.hideNavbar ).map(r => r.props.path)
+		const navbarPageInfos = pages.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
+
+
 
 		const renderPages = (pages) => pages.map((page, i) => {
 			const { exact, path, ...props } = page.props
@@ -62,6 +89,13 @@ export class PageManager extends Component {
 
 		return (
 			<div className="page-container">
+				<section className={"page-inner"}>
+					<Switch location={location}>
+					{
+						renderPages(notAnimatedPages)
+					}
+					</Switch>
+				</section>
 				<TransitionGroup component="div" className={(this.state.direction >= 0 ? "right" : "left")}>
 					<CSSTransition
 						key={currentKey}
@@ -74,20 +108,22 @@ export class PageManager extends Component {
 							{
 								renderPages(animatedPages)
 							}
-							</Switch>
+							</Switch>	
 						</section>
 					</CSSTransition>
-				</TransitionGroup>								
-				<section className={"page-inner"}>
-					<Switch location={location}>
-					{
-						renderPages(notAnimatedPages)
-					}
-					</Switch>
-				</section>
+				</TransitionGroup>
 				{ hideNavbarPath.indexOf(location.pathname) === -1 && navbars.map((navbar, k) => {
-					return React.cloneElement(navbar, { pages, key: k })
+					return React.cloneElement(navbar, { pages: navbarPageInfos, key: k })
 				}) }
+				{ this.state.renderSplash ? (
+				<CSSTransition
+					timeout={timeout}
+					in={this.state.hideSplash}
+					classNames="splash"
+				>
+					{ splashScreen }
+				</CSSTransition>
+				): null }
 			</div>
 		);
 	}

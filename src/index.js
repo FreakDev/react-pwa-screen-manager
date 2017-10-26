@@ -9,7 +9,7 @@ import PageManager from './PageManager'
 import Page from './Page'
 import NavigationBar from './NavigationBar'
 import ForbiddenPage from './ForbiddenPage'
-
+import SplashScreen from './SplashScreen'
 
 ReactDOM.render(
 <div>
@@ -19,6 +19,7 @@ ReactDOM.render(
             return true
         }}
     >
+        <SplashScreen style={{ background: 'black' }}  />
         <Page style={{ background: 'yellow' }} name="splash" exact path="/" noAnim noNavbar hideNavbar >
             <h1>Splash</h1>
         </Page>

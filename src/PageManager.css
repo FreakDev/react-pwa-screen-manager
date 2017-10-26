@@ -21,37 +21,58 @@
   left: 0;  
   height: 100%;
   width: 100%;  
+  will-change:transform;
 }
+
+
+
+.splash {
+  z-index: 1000;
+  will-change:opacity;
+}
+
+.splash.splash-enter {
+  transition: opacity 0.5s;
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.splash.splash-enter.splash-enter-active {
+  opacity: 0;  
+}
+
+
+
 
 .page-appear-active,
 .page-enter-active {
-  transition: all 0.5s;
+  transition: transform 0.5s;
 }
 
 .page-exit {
-  transition: all 0.5s;
-  transform: translateX(0);
+  transition: transform 0.5s;
+  transform: translate3d(0, 0, 0);
 }
 
 
 
 .left .page-appear,
 .left .page-enter {
-  transform: translateX(-100%);
+  transform: translate3d(-100%, 0, 0);
 }
 
 .left .page-appear-active,
 .left .page-enter-active {
-  transform: translateX(0)
+  transform: translate3d(0, 0, 0)
 }
 
 .left .page-exit,
 .left .page-exit {
-  transform: translateX(0)
+  transform: translate3d(0, 0, 0)
 }
 
 .left .page-exit-active {
-  transform: translateX(100%);
+  transform: translate3d(100%, 0, 0);
 }
 
 
