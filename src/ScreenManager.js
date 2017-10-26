@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { withRouter, Switch } from 'react-router-dom'
+import { withRouter, Switch, Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
@@ -73,7 +73,18 @@ export class ScreenManager extends Component {
 		const hideNavbarPath = pages.filter( r => r.props.hideNavbar ).map(r => r.props.path)
 		const navbarScreenInfos = pages.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
 
-
+		const renderForbidden = (screen) => {
+			if (screen) {
+				if (screen.props.redirectTo) {
+					return (
+						<Redirect to={screen.props.redirectTo} />
+					)
+				} else {
+					return screen
+				}
+			} else 
+				return null
+		}
 
 		const renderScreens = (pages) => pages.map((page, i) => {
 			const { exact, path, ...props } = page.props
@@ -82,7 +93,7 @@ export class ScreenManager extends Component {
 					if (!this.props.authCheck || (!page.props.protected || this.props.authCheck()))
 						return React.cloneElement(page, { ...props })
 					else
-						return forbiddenScreen || null
+						return renderForbidden(forbiddenScreen)
 				} } />
 			)
 		})

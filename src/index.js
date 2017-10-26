@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { Redirect } from 'react-router-dom';
-
 import './index.css'
 
 import ScreenManager from './ScreenManager'
@@ -16,7 +14,7 @@ ReactDOM.render(
     <ScreenManager 
         authCheck={() => {
             // return auth status
-            return true
+            return false
         }}
     >
         <SplashScreen style={{ background: 'black' }}  />
@@ -35,9 +33,7 @@ ReactDOM.render(
         <Screen protected style={{ background: 'blue' }} name="Screen 3" exact path="/settings">
             <h1>Screen 3</h1>
         </Screen>
-        <ForbiddenScreen style={{ background: 'red' }} name="forbidden" exact path="/forbidden">
-            <Redirect to={{ pathname:"/" }} />
-        </ForbiddenScreen>        
+        <ForbiddenScreen style={{ background: 'red' }} name="forbidden" exact path="/forbidden" redirectTo={{ pathname:"/" }} />
         <NavigationBar position="bottom" />
     </ScreenManager>
 </div>
