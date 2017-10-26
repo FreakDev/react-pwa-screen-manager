@@ -5,16 +5,16 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
-import Page from './Page'
+import Screen from './Screen'
 import NavigationBar from './NavigationBar'
-import ForbiddenPage from './ForbiddenPage'
+import ForbiddenScreen from './ForbiddenScreen'
 import SplashScreen from './SplashScreen'
 
-import './PageManager.css';
+import './ScreenManager.css';
 
 const timeout = { enter: 500, exit: 500 };
 
-export class PageManager extends Component {
+export class ScreenManager extends Component {
 	constructor(props) {
 		super(props)
 
@@ -42,16 +42,16 @@ export class PageManager extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const findPage = (ref, elem) => {
+		const findScreen = (ref, elem) => {
 			return elem.indexOf(ref) === 0;
 		};
 		const pageOrder = React.Children.map(this.props.children, (child) => child.props.path)
 
 		let indexCurrent = pageOrder.findIndex(
-			findPage.bind(this, this.props.location.pathname)
+			findScreen.bind(this, this.props.location.pathname)
 		);
 		let indexNext = pageOrder.findIndex(
-			findPage.bind(this, nextProps.location.pathname)
+			findScreen.bind(this, nextProps.location.pathname)
 		);
 
 		this.setState({
@@ -63,36 +63,36 @@ export class PageManager extends Component {
 		const { children, location } = this.props
 		const currentKey = location.pathname.split("/")[1] || "/";
 
-		const pages = children.filter( c => c.type === Page )
+		const pages = children.filter( c => c.type === Screen )
 		const navbars = children.filter(child => child.type === NavigationBar )		
-		const forbiddenPage = children.find( c => c.type === ForbiddenPage )		
+		const forbiddenScreen = children.find( c => c.type === ForbiddenScreen )		
 		const splashScreen = children.find( c => c.type === SplashScreen )		
 		
-		const animatedPages = pages.filter( r => !r.props.noAnim )
-		const notAnimatedPages = pages.filter( r => r.props.noAnim )
+		const animatedScreens = pages.filter( r => !r.props.noAnim )
+		const notAnimatedScreens = pages.filter( r => r.props.noAnim )
 		const hideNavbarPath = pages.filter( r => r.props.hideNavbar ).map(r => r.props.path)
-		const navbarPageInfos = pages.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
+		const navbarScreenInfos = pages.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
 
 
 
-		const renderPages = (pages) => pages.map((page, i) => {
+		const renderScreens = (pages) => pages.map((page, i) => {
 			const { exact, path, ...props } = page.props
 			return (
 				<Route key={i} exact={exact} path={path} render={() => {
 					if (!this.props.authCheck || (!page.props.protected || this.props.authCheck()))
 						return React.cloneElement(page, { ...props })
 					else
-						return forbiddenPage || null
+						return forbiddenScreen || null
 				} } />
 			)
 		})
 
 		return (
-			<div className="page-container">
-				<section className={"page-inner"}>
+			<div className="screen-container">
+				<section className={"screen-inner"}>
 					<Switch location={location}>
 					{
-						renderPages(notAnimatedPages)
+						renderScreens(notAnimatedScreens)
 					}
 					</Switch>
 				</section>
@@ -100,20 +100,20 @@ export class PageManager extends Component {
 					<CSSTransition
 						key={currentKey}
 						timeout={timeout}
-						classNames="page"
+						classNames="screen"
 						appear
 					>
-						<section className={"page-inner"}>
+						<section className={"screen-inner"}>
 							<Switch location={location}>
 							{
-								renderPages(animatedPages)
+								renderScreens(animatedScreens)
 							}
 							</Switch>	
 						</section>
 					</CSSTransition>
 				</TransitionGroup>
 				{ hideNavbarPath.indexOf(location.pathname) === -1 && navbars.map((navbar, k) => {
-					return React.cloneElement(navbar, { pages: navbarPageInfos, key: k })
+					return React.cloneElement(navbar, { pages: navbarScreenInfos, key: k })
 				}) }
 				{ this.state.renderSplash ? (
 				<CSSTransition
@@ -129,11 +129,11 @@ export class PageManager extends Component {
 	}
 }
 
-const PageManagerWithRouter = withRouter(PageManager)
+const ScreenManagerWithRouter = withRouter(ScreenManager)
 
 export default props => {
 	return (
 	<Router>
-		<PageManagerWithRouter { ...props } />
+		<ScreenManagerWithRouter { ...props } />
 	</Router>
 )};

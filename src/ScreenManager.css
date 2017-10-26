@@ -1,4 +1,4 @@
-.page-container {
+.screen-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -7,7 +7,7 @@
   overflow: hidden;
 }
 
-.page-container .page-inner {
+.screen-container .screen-inner {
   position: absolute;
   top: 0;
   left: 0;  
@@ -15,7 +15,7 @@
   width: 100%;  
 }
 
-.page {
+.screen {
   position: relative;
   top: 0;
   left: 0;  
@@ -44,55 +44,55 @@
 
 
 
-.page-appear-active,
-.page-enter-active {
+.screen-appear-active,
+.screen-enter-active {
   transition: transform 0.5s;
 }
 
-.page-exit {
+.screen-exit {
   transition: transform 0.5s;
   transform: translate3d(0, 0, 0);
 }
 
 
 
-.left .page-appear,
-.left .page-enter {
+.left .screen-appear,
+.left .screen-enter {
   transform: translate3d(-100%, 0, 0);
 }
 
-.left .page-appear-active,
-.left .page-enter-active {
+.left .screen-appear-active,
+.left .screen-enter-active {
   transform: translate3d(0, 0, 0)
 }
 
-.left .page-exit,
-.left .page-exit {
+.left .screen-exit,
+.left .screen-exit {
   transform: translate3d(0, 0, 0)
 }
 
-.left .page-exit-active {
+.left .screen-exit-active {
   transform: translate3d(100%, 0, 0);
 }
 
 
 
 
-.right .page-appear,
-.right .page-enter {
+.right .screen-appear,
+.right .screen-enter {
   transform: translateX(100%);
 }
 
-.right .page-appear-active,
-.right .page-enter-active {
+.right .screen-appear-active,
+.right .screen-enter-active {
   transform: translateX(0);
 }
 
 
-.right .page-exit {
+.right .screen-exit {
   transform: translateX(0);
 }
 
-.right .page-exit-active {
+.right .screen-exit-active {
   transform: translateX(-100%);
 }
