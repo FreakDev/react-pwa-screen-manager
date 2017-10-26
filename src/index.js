@@ -1,27 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import './index.css';
+import { Redirect } from 'react-router-dom';
 
-import PageManager from './PageManager';
-import Page from './Page';
-import NavigationBar from './NavigationBar';
+import './index.css'
+
+import PageManager from './PageManager'
+import Page from './Page'
+import NavigationBar from './NavigationBar'
+import ForbiddenPage from './ForbiddenPage'
+
 
 ReactDOM.render(
 <div>
-    <PageManager noRouter>
-        <Page style={{ background: 'yellow' }} name="splash" exact path="/splash" noAnim noNavbar >
+    <PageManager 
+        authCheck={() => {
+            // return auth status
+            return true
+        }}
+    >
+        <Page style={{ background: 'yellow' }} name="splash" exact path="/" noAnim >
             <h1>Splash</h1>
         </Page>
-        <Page style={{ background: 'red' }} name="home" exact path="/">
+        <Page style={{ background: 'cyan' }} name="home" exact path="/home">
             <h1>Home</h1>
         </Page>
-        <Page style={{ background: 'green' }} name="page 2" exact path="/two">
+        <Page protected style={{ background: 'green' }} name="page 2" exact path="/two">
             <h1>page 2</h1>
         </Page>
         <Page style={{ background: 'blue' }} name="page 3" exact path="/three">
             <h1>Page 3</h1>
         </Page>
+        <ForbiddenPage style={{ background: 'red' }} name="forbidden" exact path="/forbidden">
+            <Redirect to={{ pathname:"/" }} />
+        </ForbiddenPage>        
         <NavigationBar position="bottom" />
     </PageManager>
 </div>

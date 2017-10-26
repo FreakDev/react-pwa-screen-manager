@@ -7,6 +7,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import Page from './Page'
 import NavigationBar from './NavigationBar'
+import ForbiddenPage from './ForbiddenPage'
 
 import './PageManager.css';
 
@@ -43,10 +44,17 @@ export class PageManager extends Component {
 		const pages = routes.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
 		const navbars = children.filter(child => child.type === NavigationBar)
 
+		const forbiddenPage = children.find( c => c.type === ForbiddenPage )		
+
 		const renderPages = (pages) => pages.map((page, i) => {
 			const { exact, path, ...props } = page.props
 			return (
-				<Route key={i} exact={exact} path={path} render={() => React.cloneElement(page, { ...props })} />											
+				<Route key={i} exact={exact} path={path} render={() => {
+					if (!this.props.authCheck || (!page.props.protected || this.props.authCheck()))
+						return React.cloneElement(page, { ...props })
+					else
+						return forbiddenPage || null
+				} } />
 			)
 		})
 
