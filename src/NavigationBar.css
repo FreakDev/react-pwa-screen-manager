@@ -1,5 +1,6 @@
 nav {
     position: fixed;
+    width: 100%;
 }
 
 nav.bottom {
