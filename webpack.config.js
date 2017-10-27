@@ -1,41 +1,8 @@
 
-var sourcePathConfig = {}
-
-if (process.env.WEBPACK_TARGET !== 'examples') {
-  sourcePathConfig = {
-    entry: './src/lib',
-    output: {
-      path: __dirname + '/build/lib',
-      filename: 'index.js'
-    }
-  }
+if (process.env.WEBPACK_TARGET === 'examples') {
+  console.log('Building examples')
+  module.exports = require('./webpack/examples.config')
 } else {
-  sourcePathConfig = {
-    entry: './src/examples',
-    output: {
-      path: __dirname + '/build/examples',
-      filename: 'index.js'
-    }
-  }  
+  console.log('Building library')
+  module.exports = require('./webpack/lib.config')
 }
-
-module.exports = Object.assign(sourcePathConfig, {
-  context: __dirname,
-  
-  devtool: 'source-map',
-
-  module: {
-    loaders: [{
-        test: /\.css$/,
-        loader: 'css-loader'
-    },
-    {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader'
-    }]
-  },
-  
-  plugins: [
-  ]
-})

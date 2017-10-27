@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import './index.css'
 
-import { ScreenManager, Screen, NavigationBar, ForbiddenScreen, SplashScreen } from '../../build/lib'
+import { ScreenManager, Screen, NavigationBar, ForbiddenScreen, SplashScreen } from '../lib'
 
 ReactDOM.render(
 <div>

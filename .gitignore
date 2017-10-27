@@ -1,5 +1,7 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+!/**/.gitkeep
+
 # dependencies
 /node_modules
 
@@ -7,8 +9,8 @@
 /coverage
 
 # production
-/build/*
-!/build/lib/.gitkeep
+!/dist/examples/index.html
+/dist/**/*
 
 # misc
 .DS_Store

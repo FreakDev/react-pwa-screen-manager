@@ -2,7 +2,7 @@
   "name": "react-pwa-screen-manager",
   "version": "0.1.0",
   "description": "react ui componenent to help managing screen transisition",
-  "main": "build/lib/index.js",
+  "main": "dist/lib/react-pwa-screen-manager.min.js",
   "author": "Mathias Desloges",
   "license": "ISC",
   "repository": {
@@ -26,8 +26,10 @@
     "babel-preset-react": "^6.24.1",
     "babelify": "^8.0.0",
     "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "style-loader": "^0.19.0",
     "webpack": "^3.8.1"
   },
   "scripts": {
