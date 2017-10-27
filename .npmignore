@@ -1,4 +1,4 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
+# See https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package for more about ignoring files.
 
 # dependencies
 /node_modules
@@ -7,8 +7,7 @@
 /coverage
 
 # production
-/build/lib/*
-!/build/lib/.gitkeep
+/build/lib/.gitkeep
 
 # misc
 .DS_Store

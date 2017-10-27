@@ -1,18 +1,37 @@
 {
-  "name": "react-pwa-page",
+  "name": "react-pwa-screen-manager",
   "version": "0.1.0",
-  "private": true,
+  "description": "react ui componenent to help managing screen transisition",
+  "main": "build/lib/index.js",
+  "author": "Mathias Desloges",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreakDev/react-pwa-screen-manager.git"
+  },
+  "peerDependencies": {
+    "react": ">=15.0.0",
+    "react-dom": ">=15.0.0"
+  },
   "dependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.14",
     "react-transition-group": "^2.2.1"
   },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-esnext": "^1.1.3",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^14.5.0",
+    "browserify-css": "^0.12.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "build-lib": "./node_modules/.bin/babel src/lib --out-dir build/lib --presets=esnext,react && cp src/lib/*.css build/lib/",
+    "build-examples": "./node_modules/.bin/browserify src/examples/index.js -o build/examples/index.js -t [ babelify --presets [ esnext react ] ] -t browserify-css",
+    "build": "npm run build-lib && npm run build-examples"
   }
 }
