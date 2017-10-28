@@ -73,6 +73,8 @@ export class ScreenManager extends Component {
 		const hideNavbarPath = pages.filter( r => r.props.hideNavbar ).map(r => r.props.path)
 		const navbarScreenInfos = pages.filter(r => !r.props.noNavbar).map(r => ({ name: r.props.name, path: r.props.path }))
 
+		const isCurrentScreenAnimated = notAnimatedScreens.findIndex(screen => screen.props.path === location.pathname) === -1
+
 		const renderForbidden = (screen) => {
 			if (screen) {
 				if (screen.props.redirectTo) {
@@ -106,25 +108,26 @@ export class ScreenManager extends Component {
 						renderScreens(notAnimatedScreens)
 					}
 					</Switch>
-				</section>
-				<TransitionGroup component="div" className={(this.state.direction >= 0 ? "right" : "left")}>
-					<CSSTransition
-						key={currentKey}
-						timeout={timeout}
-						classNames="screen"
-						appear
-					>
-						<section className={"screen-inner"}>
-							<Switch location={location}>
-							{
-								renderScreens(animatedScreens)
-							}
-							</Switch>	
-						</section>
-					</CSSTransition>
-				</TransitionGroup>
-				{ hideNavbarPath.indexOf(location.pathname) === -1 && navbars.map((navbar, k) => {
-					return React.cloneElement(navbar, { pages: navbarScreenInfos, key: k })
+				</section>{
+				isCurrentScreenAnimated ? (
+					<TransitionGroup component="div" className={(this.state.direction >= 0 ? "right" : "left")}>
+						<CSSTransition
+							key={currentKey}
+							timeout={timeout}
+							classNames="screen"
+							appear
+						>
+							<section className={"screen-inner"}>
+								<Switch location={location}>
+								{
+									renderScreens(animatedScreens)
+								}
+								</Switch>	
+							</section>
+						</CSSTransition>
+					</TransitionGroup>
+				): null }{ hideNavbarPath.indexOf(location.pathname) === -1 && navbars.map((navbar, k) => {
+					return React.cloneElement(navbar, { pages: navbarScreenInfos, key: k, location })
 				}) }
 				{ this.state.renderSplash ? (
 				<CSSTransition
